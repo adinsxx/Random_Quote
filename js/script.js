@@ -1,6 +1,3 @@
-// event listener to respond to "Show another quote" button clicks
-// when user clicks anywhere on the button, the "printQuote" function is called
-document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
 //Create an array of JavaScript objects to hold the data for your quotes. 
 //Name the array quotes. 
@@ -10,31 +7,31 @@ var quotes = [{
   quote: "All hope abandon, ye who enter here.",
   source: "Dante Alighieri",
   citation: "The Divine Comedy: Inferno, Canto III",
-  year: "",
+  year: "1307",
   tags: ["poem", "epic"]
 }, {
   quote: "While there's life there's hope, and only the dead have none.",
   source: "Theocritus",
   citation: "Theocritus",
-  year: "",
+  year: " ",
   tags: ["philosophy", "death"]
 }, {
   quote: "Hope, withering, fled—and Mercy sighed farewell.",
   source: "Lord Byron",
   citation: "Corsair",
-  year: "",
+  year: " ",
   tags: ["poem", "epic"]
 }, {
   quote: "You burn your hopes.",
   source: "Virgil",
   citation: "Æneid",
-  year: "",
+  year: "19 BC",
   tags: ["poem"]
 }, {
   quote: "I hope for nothing. I fear nothing. I am free.",
   source: "Nikos Kazantzakis",
-  citation: "",
-  year: "",
+  citation: " ",
+  year: " ",
   tags: ["epitaph"]
 }];
 
@@ -58,16 +55,45 @@ var getRandomQuote = function(qarray) {
 //printQuote doesn't add a for a missing citation or a if the year property is missing
 //how to check for citation/year
 
+//this looks like a wreck
 var printQuote = function() {
   var selectedQuote = getRandomQuote(quotes);
-  if(){};
-  else if(){};
-  else{};
-  var formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
-    "<p class='source'>" + selectedQuote.source + "</p>" +
-    "<span class='year'>" + selectedQuote.year + "</span>";
+  var formattedQuote;
 
+  if (selectedQuote.year && selectedQuote.citation === " ") {
+    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
+      "<p class='source'>" + selectedQuote.source + "</p>";
+  } //if both year and citation are missing
+  else if (selectedQuote.year === " ") {
+    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
+      "<p class='source'>" + selectedQuote.source +
+      "<span class='citation'>" + selectedQuote.citation + "</span>" +
+      "</p>";
+  } else if (selectedQuote.citation === " ") {
+    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
+      "<p class='source'>" + selectedQuote.source +
+      "<span class='year'>" + selectedQuote.year + "</span>" +
+      "</p>";
+  } else {
+    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
+      "<p class='source'>" + selectedQuote.source +
+      "<span class='citation'>" + selectedQuote.citation + "</span>" +
+      "<span class='year'>" + selectedQuote.year + "</span>" +
+      "</p>";
+  }
   document.getElementById('quote-box').innerHTML = formattedQuote;
 };
 
 printQuote();
+// event listener to respond to "Show another quote" button clicks
+// when user clicks anywhere on the button, the "printQuote" function is called
+document.getElementById('loadQuote').addEventListener("click", printQuote, false);
+
+
+//EXTRA CREDIT
+
+//*When the quote changes, randomly change the background color of the page.
+
+//Don't display a random quote more than once until ALL quotes from the array have been displayed. 
+//To help reviewers (and yourself) verify that the quotes don’t repeat until they’ve all been displayed, 
+//log the quote to the console each time the “Show Another Quote” button is clicked.
