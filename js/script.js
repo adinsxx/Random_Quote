@@ -85,6 +85,7 @@ var printQuote = function() {
 };
 
 printQuote();
+
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
@@ -93,7 +94,13 @@ document.getElementById('loadQuote').addEventListener("click", printQuote, false
 //EXTRA CREDIT
 
 //*When the quote changes, randomly change the background color of the page.
+  //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
+  //set body background-color property in css
 
 //Don't display a random quote more than once until ALL quotes from the array have been displayed. 
 //To help reviewers (and yourself) verify that the quotes don’t repeat until they’ve all been displayed, 
 //log the quote to the console each time the “Show Another Quote” button is clicked.
+  //need to know length of array
+  //somehow identify each quote
+  //when choosing quote, compare against already chosen and identified quotes? (make array?)
+    //quotes could be 'identified' just by their position in the array
