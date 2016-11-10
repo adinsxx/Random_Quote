@@ -60,6 +60,9 @@ var getRandomQuote = function(qarray) {
 
 var printQuote = function() {
   var selectedQuote = getRandomQuote(quotes);
+  if(){};
+  else if(){};
+  else{};
   var formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
     "<p class='source'>" + selectedQuote.source + "</p>" +
     "<span class='year'>" + selectedQuote.year + "</span>";
