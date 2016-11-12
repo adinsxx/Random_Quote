@@ -35,11 +35,34 @@ var quotes = [{
   tags: ["epitaph"]
 }];
 
-//Create a function named getRandomQuote which:
-// * selects a RANDOM quote object from the quotes array
-// * returns the randomly selected quote object
-//random number needs to change every time button is clicked or after getRandomQuote runs
-//make random number correspond to array[] ?
+//10 colors to select from for bg color
+
+var colors = ['#00BA9C',
+  '#F77D59',
+  '#A14273',
+  '#C9DE63',
+  '#FFBA9C',
+  '#4F5E8C',
+  '#FF8A00',
+  '#8F2E42',
+  '#FC0052',
+  '#69524D'
+];
+
+
+
+//random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
+//set body background-color property in css
+
+var randColor = function(carray){
+  var rand = Math.floor(Math.random() * carray.length); 
+  for (var i = 0; i < carray.length; i++){
+    if (rand === i){
+      return carray[i];
+    }
+  }
+};
+
 
 var getRandomQuote = function(qarray) {
   var rand = Math.floor(Math.random() * qarray.length); //chooses number between 0 and amt of quotes
@@ -50,15 +73,12 @@ var getRandomQuote = function(qarray) {
   }
 };
 
-//* printQuote calls the getRandomQuote function and stores the returned quote object in a variable
-//* printQuote constructs a string containing the different properties of the quote object 
-//printQuote doesn't add a for a missing citation or a if the year property is missing
-//how to check for citation/year
 
 //this looks like a wreck
 var printQuote = function() {
+
   var selectedQuote = getRandomQuote(quotes);
-  var formattedQuote;
+  var color = randColor(colors);
 
   if (selectedQuote.year && selectedQuote.citation === " ") {
     formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
@@ -81,8 +101,11 @@ var printQuote = function() {
       "<span class='year'>" + selectedQuote.year + "</span>" +
       "</p>";
   }
+
+  document.body.style.backgroundColor = color;
   document.getElementById('quote-box').innerHTML = formattedQuote;
 };
+
 
 printQuote();
 
@@ -91,16 +114,17 @@ printQuote();
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
 
 
-//EXTRA CREDIT
-
-//*When the quote changes, randomly change the background color of the page.
-  //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
-  //set body background-color property in css
 
 //Don't display a random quote more than once until ALL quotes from the array have been displayed. 
 //To help reviewers (and yourself) verify that the quotes don’t repeat until they’ve all been displayed, 
 //log the quote to the console each time the “Show Another Quote” button is clicked.
-  //need to know length of array
-  //somehow identify each quote
-  //when choosing quote, compare against already chosen and identified quotes? (make array?)
-    //quotes could be 'identified' just by their position in the array
+  //need to know length of array, when end is reached, that's how we know all have been used
+  //somehow identify each quote and compare against upcoming quote/new random number
+     //quotes could be 'identified' just by their position in the initial array
+  //make array to hold used quotes? feels like overkill
+  //when the rand number is generated, note the index position of array/quote that it matches 
+
+
+//Refresh the quote after a set amount of time. 
+//For example, every 30 seconds, make a new quote appear. 
+//(You can use the setInterval() or setTimeout() method to do this
