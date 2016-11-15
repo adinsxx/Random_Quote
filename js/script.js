@@ -73,20 +73,50 @@ var randColor = function(carray){
 //when qarray.length = 0, start process over using new array
 
 
-
-
 var getRandomQuote = function(qarray, uarray) {
-  for (var i = 0; i < qarray.length; i++) {
-    if(qarray.length > 0){
-      uarray = qarray.splice(Math.floor(Math.random()*qarray.length),1)[i];
-      return uarray;
+    // Do not run if used array is the size of quote array.
+  if (qarray.length != uarray.length) {
+    // 'selection' is set to an invalid array index...
+    var selection = -1;
+
+    // ... so we can loop until it gets a valid value.
+    while (selection < 0) {
+      // The loop generates a random number between 0 and the size of the quote array.
+      var random = Math.floor(Math.random() * (qarray.length + 1));
+
+      // 'used' will signal if the 'random' number is found in the 'used' array.
+      var used = false;
+      for (var i = 0; i < uarray.length; i++) {
+        // We loop through the 'used' array and test if the 'random' number is found in it. 
+        // If it is 'used' is set to true.
+        if (uarray[i] === random) { used = true; }
+      }
+      // If 'random' is not 'used', set 'selection' to the 'random' number.
+      // This will break the while loop.
+      if (used === false) { selection = random; }
     }
-    while(qarray.length === 0 || qarray.length < uarray.length) {
-      qarray = uarray.splice(i,1);
-    }
+
+    // Add the selection to the 'used' array.
+    uarray.push(selection);
+
+    // Return the selected quote. 
+    return qarray[selection];
   }
-  return qarray;
 };
+
+
+// var getRandomQuote = function(qarray, uarray) {
+//   for (var i = 0; i < qarray.length; i++) {
+//     if(qarray.length > 0){
+//       uarray = qarray.splice(Math.floor(Math.random()*qarray.length),1)[i];
+//       return uarray;
+//     }
+//     while(qarray.length === 0 || qarray.length < uarray.length) {
+//       qarray = uarray.splice(i,1);
+//     }
+//   }
+//   return qarray;
+// };
 
 //used = qarray.splice(Math.random() * qarray.length, 1)[i];
 
@@ -98,7 +128,6 @@ var getRandomQuote = function(qarray, uarray) {
 var printQuote = function() {
 	var formattedQuote;
   var color = randColor(colors);
-  var selectedQuote = getRandomQuote(quotes, used);
 
 	if (selectedQuote.year && selectedQuote.citation === " ") {
     formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
