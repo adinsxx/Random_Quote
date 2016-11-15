@@ -49,7 +49,7 @@ var colors = ['#00BA9C',
   '#69524D'
 ];
 
-
+var used = [];
 
 //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
 //set body background-color property in css
@@ -73,12 +73,19 @@ var randColor = function(carray){
 //when qarray.length = 0, start process over using new array
 
 
-var getRandomQuote = function(qarray) {
-  var used = [];
+
+
+var getRandomQuote = function(qarray, uarray) {
   for (var i = 0; i < qarray.length; i++) {
-    used = qarray.splice(Math.floor(Math.random()*qarray.length),1)[i];
-    return used;
+    if(qarray.length > 0){
+      uarray = qarray.splice(Math.floor(Math.random()*qarray.length),1)[i];
+      return uarray;
+    }
+    while(qarray.length === 0 || qarray.length < uarray.length) {
+      qarray = uarray.splice(i,1);
+    }
   }
+  return qarray;
 };
 
 //used = qarray.splice(Math.random() * qarray.length, 1)[i];
@@ -91,8 +98,8 @@ var getRandomQuote = function(qarray) {
 var printQuote = function() {
 	var formattedQuote;
   var color = randColor(colors);
-  var selectedQuote = getRandomQuote(quotes);
-  
+  var selectedQuote = getRandomQuote(quotes, used);
+
 	if (selectedQuote.year && selectedQuote.citation === " ") {
     formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
       "<p class='source'>" + selectedQuote.source + "</p>";
