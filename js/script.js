@@ -1,4 +1,3 @@
-
 //Create an array of JavaScript objects to hold the data for your quotes. 
 //Name the array quotes. 
 //The quotes array should be accessible in the global scope.
@@ -54,10 +53,10 @@ var used = [];
 //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
 //set body background-color property in css
 
-var randColor = function(carray){
-  var rand = Math.floor(Math.random() * carray.length); 
-  for (var i = 0; i < carray.length; i++){
-    if (rand === i){
+var randColor = function(carray) {
+  var rand = Math.floor(Math.random() * carray.length);
+  for (var i = 0; i < carray.length; i++) {
+    if (rand === i) {
       return carray[i];
     }
   }
@@ -66,70 +65,48 @@ var randColor = function(carray){
 
 //takes current list of quotes
 //first loop selects a quote that is == rand
-  //removes quote object, stores in new array
-  //returns removed quote
+//removes quote object, stores in new array
+//returns removed quote
 //when loop runs again, array has been updated and contains one less item
 //repeat
 //when qarray.length = 0, start process over using new array
 
 
+
 var getRandomQuote = function(qarray, uarray) {
-    // Do not run if used array is the size of quote array.
-  if (qarray.length != uarray.length) {
-    // 'selection' is set to an invalid array index...
-    var selection = -1;
+  if (qarray.length != uarray.length) { // Do not run if used array is the size of quote array.
+    var selection = -1; // 'selection' is set to an invalid array index
+    while (selection < 0) { // in order to loop until it gets a valid value.
+      var random = Math.floor(Math.random() * (qarray.length + 1)); // loop generates a random number 
+      var used = false; // 'used' will signal if the 'random' number is found in the 'used' array.
 
-    // ... so we can loop until it gets a valid value.
-    while (selection < 0) {
-      // The loop generates a random number between 0 and the size of the quote array.
-      var random = Math.floor(Math.random() * (qarray.length + 1));
+      for (var i = 0; i < uarray.length; i++) { // loop through the 'used' array and test if 'random' is found
+        if (uarray[i] === random) {
+          used = true; // If it is 'used' is set to true.
+        }
+      } //end for loop
 
-      // 'used' will signal if the 'random' number is found in the 'used' array.
-      var used = false;
-      for (var i = 0; i < uarray.length; i++) {
-        // We loop through the 'used' array and test if the 'random' number is found in it. 
-        // If it is 'used' is set to true.
-        if (uarray[i] === random) { used = true; }
-      }
       // If 'random' is not 'used', set 'selection' to the 'random' number.
-      // This will break the while loop.
-      if (used === false) { selection = random; }
-    }
+      if (used === false) {
+        selection = random; // breaks while loop
+      }
+    } //end while loop
 
     // Add the selection to the 'used' array.
     uarray.push(selection);
-
-    // Return the selected quote. 
-    return qarray[selection];
+    return qarray[selection]; // Return the selected quote. 
   }
 };
-
-
-// var getRandomQuote = function(qarray, uarray) {
-//   for (var i = 0; i < qarray.length; i++) {
-//     if(qarray.length > 0){
-//       uarray = qarray.splice(Math.floor(Math.random()*qarray.length),1)[i];
-//       return uarray;
-//     }
-//     while(qarray.length === 0 || qarray.length < uarray.length) {
-//       qarray = uarray.splice(i,1);
-//     }
-//   }
-//   return qarray;
-// };
-
-//used = qarray.splice(Math.random() * qarray.length, 1)[i];
-
-
 
 
 
 //this looks like a wreck
 var printQuote = function() {
-	var formattedQuote;
+  var formattedQuote;
   var color = randColor(colors);
+  var selectedQuote = getRandomQuote(quotes, used);
 
-	if (selectedQuote.year && selectedQuote.citation === " ") {
+  if (selectedQuote.year && selectedQuote.citation === " ") {
     formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
       "<p class='source'>" + selectedQuote.source + "</p>";
   } //if both year and citation are missing
@@ -149,7 +126,7 @@ var printQuote = function() {
       "<span class='citation'>" + selectedQuote.citation + "</span>" +
       "<span class='year'>" + selectedQuote.year + "</span>" +
       "</p>";
-    }
+  }
   document.body.style.backgroundColor = color;
   document.getElementById('quote-box').innerHTML = formattedQuote;
 };
@@ -163,4 +140,3 @@ printQuote();
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
-
