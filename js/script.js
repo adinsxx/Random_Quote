@@ -1,7 +1,6 @@
 //Create an array of JavaScript objects to hold the data for your quotes. 
 //Name the array quotes. 
 //The quotes array should be accessible in the global scope.
-
 var quotes = [{
   quote: "All hope abandon, ye who enter here.",
   source: "Dante Alighieri",
@@ -34,8 +33,8 @@ var quotes = [{
   tags: ["epitaph"]
 }];
 
-//10 colors to select from for bg color
 
+//10 colors to select from for bg color
 var colors = ['#00BA9C',
   '#F77D59',
   '#A14273',
@@ -48,11 +47,11 @@ var colors = ['#00BA9C',
   '#69524D'
 ];
 
-var used = [];
+var qcopy = []; //init qcopy array for holding onto 'used' quotes from quotes array
 
 //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
 //set body background-color property in css
-
+//feels like there is probably a better way to do this
 var randColor = function(carray) {
   var rand = Math.floor(Math.random() * carray.length);
   for (var i = 0; i < carray.length; i++) {
@@ -63,54 +62,27 @@ var randColor = function(carray) {
 };
 
 
-//takes current list of quotes
-//first loop selects a quote that is == rand
-//removes quote object, stores in new array
-//returns removed quote
-//when loop runs again, array has been updated and contains one less item
-//repeat
-//when qarray.length = 0, start process over using new array
-
-
-
-var getRandomQuote = function(qarray, uarray) {
-  if (qarray.length != uarray.length) { // Do not run if used array is the size of quote array.
-    var selection = -1; // 'selection' is set to an invalid array index
-    while (selection < 0) { // in order to loop until it gets a valid value.
-      var random = Math.floor(Math.random() * (qarray.length + 1)); // loop generates a random number 
-      var used = false; // 'used' will signal if the 'random' number is found in the 'used' array.
-
-      for (var i = 0; i < uarray.length; i++) { // loop through the 'used' array and test if 'random' is found
-        if (uarray[i] === random) {
-          used = true; // If it is 'used' is set to true.
-        }
-      } //end for loop
-
-      // If 'random' is not 'used', set 'selection' to the 'random' number.
-      if (used === false) {
-        selection = random; // breaks while loop
-      }
-    } //end while loop
-
-    // Add the selection to the 'used' array.
-    uarray.push(selection);
-    return qarray[selection]; // Return the selected quote. 
+var getRandomQuote = function() {
+  var random = Math.floor(Math.random() * (qcopy.length)); //generates random number based on length of qcopy to keep things dynamic in case more quotes are added
+  if (qcopy.length === 0) { //if qcopy is empty either from init or from being spliced..
+    qcopy = quotes.slice(0); //..slice from quotes array beginning at 0 and going through entire length of quotes thus refilling qcopy
   }
+  return qcopy.splice(random, 1)[0]; //returns spliced value from qcopy that is equal to the random number at index 0 thus emptying qcopy
 };
 
 
-
-//this looks like a wreck
+//this looks like a wreck, sorry
 var printQuote = function() {
-  var formattedQuote;
-  var color = randColor(colors);
-  var selectedQuote = getRandomQuote(quotes, used);
 
-  if (selectedQuote.year && selectedQuote.citation === " ") {
+  var formattedQuote; //initializes formattedQuote for use later on
+
+  var color = randColor(colors); //sets random color
+  var selectedQuote = getRandomQuote(); //sets random quote
+
+  if (selectedQuote.year && selectedQuote.citation === " ") { //if both year and citation are missing alter output and so on
     formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
       "<p class='source'>" + selectedQuote.source + "</p>";
-  } //if both year and citation are missing
-  else if (selectedQuote.year === " ") {
+  } else if (selectedQuote.year === " ") {
     formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
       "<p class='source'>" + selectedQuote.source +
       "<span class='citation'>" + selectedQuote.citation + "</span>" +
@@ -127,14 +99,16 @@ var printQuote = function() {
       "<span class='year'>" + selectedQuote.year + "</span>" +
       "</p>";
   }
-  document.body.style.backgroundColor = color;
+  console.log(selectedQuote); //logging used quotes to help validate that function does not repeat any
+
+  document.body.style.backgroundColor = color; //set background to randomly chosen color
   document.getElementById('quote-box').innerHTML = formattedQuote;
 };
 
 
-printQuote();
+printQuote(); //does it matter if this comes before or after the setInterval method or the getElementByID method?
 
-// window.setInterval(printQuote, 3000); //For example, every 30 seconds, make a new quote appear. 
+window.setInterval(printQuote, 3000); //New quote every 30 seconds
 
 
 // event listener to respond to "Show another quote" button clicks
