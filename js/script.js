@@ -51,7 +51,7 @@ var qcopy = []; //init qcopy array for holding onto 'used' quotes from quotes ar
 
 //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
 //set body background-color property in css
-//feels like there is probably a better way to do this
+//feels like there is probably a better way to do this now that I'm done with the project and know more..
 var randColor = function(carray) {
   var rand = Math.floor(Math.random() * carray.length);
   for (var i = 0; i < carray.length; i++) {
