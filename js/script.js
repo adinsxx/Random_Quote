@@ -11,13 +11,11 @@ var quotes = [{
   quote: "While there's life there's hope, and only the dead have none.",
   source: "Theocritus",
   citation: "Theocritus",
-  year: " ",
   tags: ["philosophy", "death"]
 }, {
   quote: "Hope, withering, fled—and Mercy sighed farewell.",
   source: "Lord Byron",
   citation: "Corsair",
-  year: " ",
   tags: ["poem", "epic"]
 }, {
   quote: "You burn your hopes.",
@@ -28,8 +26,6 @@ var quotes = [{
 }, {
   quote: "I hope for nothing. I fear nothing. I am free.",
   source: "Nikos Kazantzakis",
-  citation: " ",
-  year: " ",
   tags: ["epitaph"]
 }];
 
@@ -54,11 +50,7 @@ var qcopy = []; //init qcopy array for holding onto 'used' quotes from quotes ar
 //feels like there is probably a better way to do this
 var randColor = function(carray) {
   var rand = Math.floor(Math.random() * carray.length);
-  for (var i = 0; i < carray.length; i++) {
-    if (rand === i) {
-      return carray[i];
-    }
-  }
+  return carray[rand];
 };
 
 
@@ -114,3 +106,10 @@ window.setInterval(printQuote, 3000); //New quote every 30 seconds
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
+
+
+//Peer Review Suggestions: Nhampton
+//Do you see the loop you have in your randColor function. I don’t think it’s doing anything really. The rand variable is the index you need, just return the array item at that index without the for loop
+//Instead of storing an empty string for the quote properties you don’t know, try just not making the property at all
+//Then, in print quote, instead of testing for and making three different versions of formattedQuote, make one version that tests for the presence of each property
+//Yes, I do, and then switch the way you test the printing of the quote from having several full versions of formattedQuote, to piecing together formatted quote piece by piece, testing for each property
