@@ -1,3 +1,5 @@
+//Peer Review Suggestions at bottom of document and dispersed throughout
+
 //Create an array of JavaScript objects to hold the data for your quotes. 
 //Name the array quotes. 
 //The quotes array should be accessible in the global scope.
@@ -11,13 +13,11 @@ var quotes = [{
   quote: "While there's life there's hope, and only the dead have none.",
   source: "Theocritus",
   citation: "Theocritus",
-  year: " ",
   tags: ["philosophy", "death"]
 }, {
   quote: "Hope, withering, fled—and Mercy sighed farewell.",
   source: "Lord Byron",
   citation: "Corsair",
-  year: " ",
   tags: ["poem", "epic"]
 }, {
   quote: "You burn your hopes.",
@@ -28,11 +28,10 @@ var quotes = [{
 }, {
   quote: "I hope for nothing. I fear nothing. I am free.",
   source: "Nikos Kazantzakis",
-  citation: " ",
-  year: " ",
   tags: ["epitaph"]
 }];
-
+//Peer Review: Instead of storing an empty string for the quote properties you don’t know, try just not making the property at all
+//Keys with empty values removed
 
 //10 colors to select from for bg color
 var colors = ['#00BA9C',
@@ -49,21 +48,20 @@ var colors = ['#00BA9C',
 
 var qcopy = []; //init qcopy array for holding onto 'used' quotes from quotes array
 
+
 //random color.. choose from a 'pool' of pre-chosen colors or somehow generate HEX
 //set body background-color property in css
 //feels like there is probably a better way to do this now that I'm done with the project and know more..
 var randColor = function(carray) {
   var rand = Math.floor(Math.random() * carray.length);
-  for (var i = 0; i < carray.length; i++) {
-    if (rand === i) {
-      return carray[i];
-    }
-  }
+  return carray[rand];
 };
+//Peer Review: Do you see the loop you have in your randColor function. I don’t think it’s doing anything really. The rand variable is the index you need, just return the array item at that index without the for loop
+//Loop removed
 
 
 var getRandomQuote = function() {
-  var random = Math.floor(Math.random() * (qcopy.length)); //generates random number based on length of qcopy to keep things dynamic in case more quotes are added
+  var random = Math.floor(Math.random() * (qcopy.length));
   if (qcopy.length === 0) { //if qcopy is empty either from init or from being spliced..
     qcopy = quotes.slice(0); //..slice from quotes array beginning at 0 and going through entire length of quotes thus refilling qcopy
   }
@@ -73,33 +71,29 @@ var getRandomQuote = function() {
 
 //this looks like a wreck, sorry
 var printQuote = function() {
-
-  var formattedQuote; //initializes formattedQuote for use later on
-
   var color = randColor(colors); //sets random color
   var selectedQuote = getRandomQuote(); //sets random quote
 
-  if (selectedQuote.year && selectedQuote.citation === " ") { //if both year and citation are missing alter output and so on
-    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
-      "<p class='source'>" + selectedQuote.source + "</p>";
-  } else if (selectedQuote.year === " ") {
-    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
-      "<p class='source'>" + selectedQuote.source +
-      "<span class='citation'>" + selectedQuote.citation + "</span>" +
-      "</p>";
-  } else if (selectedQuote.citation === " ") {
-    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
-      "<p class='source'>" + selectedQuote.source +
-      "<span class='year'>" + selectedQuote.year + "</span>" +
-      "</p>";
+  var formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
+    "<p class='source'>" + selectedQuote.source; //sets formattedQuote to this base string since all quotes have a quote and source property
+
+  if (selectedQuote.year === undefined && selectedQuote.citation === undefined) {
+    formattedQuote += "</p>";
+  } else if (selectedQuote.year === undefined || selectedQuote.citation === undefined) {
+    if (selectedQuote.year === true) {
+      formattedQuote += "<span class='year'>" + selectedQuote.year + "</span></p>";
+    } else {
+      formattedQuote += "<span class='citation'>" + selectedQuote.citation + "</span></p>";
+    }
   } else {
-    formattedQuote = "<p class='quote'>" + selectedQuote.quote + "</p>" +
-      "<p class='source'>" + selectedQuote.source +
-      "<span class='citation'>" + selectedQuote.citation + "</span>" +
-      "<span class='year'>" + selectedQuote.year + "</span>" +
-      "</p>";
+    formattedQuote += "<span class='citation'>" + selectedQuote.citation + "</span>" +
+      "<span class='year'>" + selectedQuote.year + "</span></p>";
   }
-  console.log(selectedQuote); //logging used quotes to help validate that function does not repeat any
+  //Peer Review: make one version (of formattedQuote) that tests for the presence of each property
+  //Not entirely sure this is correct/what was asked for, feels like what I did initially
+
+  console.log(selectedQuote);
+  //logging used quotes to help validate that function does not repeat any
 
   document.body.style.backgroundColor = color; //set background to randomly chosen color
   document.getElementById('quote-box').innerHTML = formattedQuote;
@@ -114,3 +108,10 @@ window.setInterval(printQuote, 3000); //New quote every 30 seconds
 // event listener to respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
 document.getElementById('loadQuote').addEventListener("click", printQuote, false);
+
+
+//Peer Review Suggestions: Nhampton
+//Do you see the loop you have in your randColor function. I don’t think it’s doing anything really. The rand variable is the index you need, just return the array item at that index without the for loop
+//Instead of storing an empty string for the quote properties you don’t know, try just not making the property at all
+//Then, in print quote, instead of testing for and making three different versions of formattedQuote, make one version that tests for the presence of each property
+
